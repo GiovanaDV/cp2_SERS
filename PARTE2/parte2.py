@@ -12,7 +12,7 @@
  • Avalie com RMSE e R²
 '''
 
-# ===== IMPORTANDO BIBLIOTECAS =====
+# importando
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -23,21 +23,10 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 import matplotlib.pyplot as plt
 
-# ===== CARREGANDO OS DADOS =====
+# dados
 df = pd.read_csv('C:\\Users\\giova\\PycharmProjects\\cp2_SERS\\PARTE2\\datasets_parte2\\T1.csv')
 
-print("=" * 60)
-print("ANÁLISE DO DATASET")
-print("=" * 60)
-print(f"Dimensões do dataset: {df.shape}")
-print(f"\nPrimeiras linhas:")
-print(df.head())
-print(f"\nColunas disponíveis:")
-print(df.columns.tolist())
-print(f"\nInformações gerais:")
-print(df.info())
-
-# ===== PREPARANDO OS DADOS =====
+# preparando dados
 # Identificando a coluna de potência
 coluna_potencia = None
 for col in ['ActivePower', 'LV ActivePower (kW)', 'Active_Power', 'Power', 'power']:
@@ -56,13 +45,10 @@ if coluna_potencia is None:
     print("Usando última coluna numérica como potência")
     coluna_potencia = df.select_dtypes(include=[np.number]).columns[-1]
 
-print(f"\n{'=' * 60}")
 print(f"Coluna de potência identificada: {coluna_potencia}")
 
-# Removendo valores faltantes
 df_limpo = df.dropna()
 
-# Estatísticas da potência
 print(f"\nEstatísticas da Potência:")
 print(f"  Mínimo: {df_limpo[coluna_potencia].min():.2f} kW")
 print(f"  Máximo: {df_limpo[coluna_potencia].max():.2f} kW")
@@ -72,7 +58,6 @@ print(f"  Mediana: {df_limpo[coluna_potencia].median():.2f} kW")
 # Separando X (variáveis independentes) e y (variável dependente)
 X = df_limpo.drop(columns=[coluna_potencia])
 
-# Remove colunas não numéricas
 colunas_originais = X.columns.tolist()
 X = X.select_dtypes(include=[np.number])
 
@@ -94,7 +79,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 print(f"\nAmostras de treino: {len(X_train)} (80%)")
 print(f"Amostras de teste: {len(X_test)} (20%)")
 
-# ===== NORMALIZANDO OS DADOS =====
+# normalizando
 print(f"\n{'=' * 60}")
 print("NORMALIZANDO OS ATRIBUTOS")
 print("=" * 60)
@@ -106,7 +91,7 @@ X_test_scaled = scaler.transform(X_test)
 
 print("Dados normalizados com StandardScaler (média=0, desvio=1)")
 
-# ===== TREINANDO OS MODELOS =====
+# treino modelos
 print(f"\n{'=' * 60}")
 print("TREINAMENTO DOS MODELOS")
 print("=" * 60)
@@ -129,12 +114,7 @@ modelo_forest = RandomForestRegressor(n_estimators=100, random_state=42, max_dep
 modelo_forest.fit(X_train_scaled, y_train)
 y_pred_forest = modelo_forest.predict(X_test_scaled)
 
-# ===== AVALIANDO OS MODELOS =====
-print(f"\n{'=' * 60}")
-print("RESULTADOS - COMPARAÇÃO DOS MODELOS")
-print("=" * 60)
-
-
+# avaliando
 # Função para calcular métricas
 def avaliar_modelo(y_real, y_previsto, nome_modelo):
     r2 = r2_score(y_real, y_previsto)
@@ -154,11 +134,7 @@ r2_linear, rmse_linear, mae_linear = avaliar_modelo(y_test, y_pred_linear, "REGR
 r2_arvore, rmse_arvore, mae_arvore = avaliar_modelo(y_test, y_pred_arvore, "ÁRVORE DE REGRESSÃO")
 r2_forest, rmse_forest, mae_forest = avaliar_modelo(y_test, y_pred_forest, "RANDOM FOREST")
 
-# ===== COMPARAÇÃO FINAL =====
-print(f"\n{'=' * 60}")
-print("RESUMO COMPARATIVO")
-print("=" * 60)
-
+# comparando
 resultados = pd.DataFrame({
     'Modelo': ['Regressão Linear', 'Árvore de Regressão', 'Random Forest'],
     'R²': [r2_linear, r2_arvore, r2_forest],
@@ -175,10 +151,7 @@ melhor_modelo = resultados.loc[melhor_idx, 'Modelo']
 print(f"\n MELHOR MODELO: {melhor_modelo}")
 print(f"   (possui o maior R² = {resultados.loc[melhor_idx, 'R²']:.4f})")
 
-# ===== VISUALIZAÇÃO DOS RESULTADOS =====
-print(f"\n{'=' * 60}")
-print("Gerando gráficos de comparação...")
-
+# resultados graficos
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 
 # Gráfico 1: Regressão Linear
@@ -210,7 +183,7 @@ plt.savefig('comparacao_eolica.png', dpi=300, bbox_inches='tight')
 print("Gráfico salvo como 'comparacao_eolica.png'")
 plt.show()
 
-# ===== ANÁLISE DAS VARIÁVEIS MAIS IMPORTANTES (RANDOM FOREST) =====
+# melhor modelo
 if melhor_modelo == 'Random Forest':
     print(f"\n{'=' * 60}")
     print("VARIÁVEIS MAIS IMPORTANTES - Random Forest")
