@@ -21,8 +21,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # ===== CARREGANDO OS DADOS =====
-# Substitua pelo caminho ou URL do seu dataset de Smart Grid
-df = pd.read_csv('C:\\Users\\giova\\PycharmProjects\\cp2_SERS\\datasets_parte1\\smart_grid_stability_augmented.csv')
+df = pd.read_csv('C:\\Users\\giova\\PycharmProjects\\cp2_SERS\\PARTE1\\datasets_parte1\\smart_grid_stability_augmented.csv')
 
 print("=" * 60)
 print("ANÁLISE DO DATASET")
@@ -37,9 +36,8 @@ print(df.info())
 
 # ===== PREPARANDO OS DADOS =====
 # Variável alvo: stabf ou stab (estável=1 ou instável=0)
-# Ajuste o nome da coluna alvo conforme seu dataset
 
-# Identificando a coluna alvo (geralmente é 'stabf' ou 'stab')
+# Identificando a coluna alvo
 coluna_alvo = None
 for col in ['stabf', 'stab', 'stability', 'stable']:
     if col in df.columns:
@@ -145,7 +143,7 @@ print(resultados.to_string(index=False))
 melhor_idx = resultados['Acurácia'].idxmax()
 melhor_modelo = resultados.loc[melhor_idx, 'Modelo']
 
-print(f"\n🏆 MELHOR MODELO: {melhor_modelo}")
+print(f"\n MELHOR MODELO: {melhor_modelo}")
 print(f"   (possui a maior acurácia = {resultados.loc[melhor_idx, 'Acurácia']:.4f})")
 
 # ===== VISUALIZAÇÃO DAS MATRIZES DE CONFUSÃO =====
@@ -189,6 +187,3 @@ elif melhor_modelo == 'KNN':
 else:
     print(classification_report(y_test, y_pred_logistica, target_names=['Instável', 'Estável']))
 
-print(f"\n{'=' * 60}")
-print("ANÁLISE COMPLETA!")
-print("=" * 60)

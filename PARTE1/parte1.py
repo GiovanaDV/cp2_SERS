@@ -20,9 +20,7 @@ from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 import matplotlib.pyplot as plt
 
 # ===== CARREGANDO OS DADOS =====
-# Substitua 'seu_arquivo.csv' pelo caminho do seu dataset
-# Se estiver no GitHub, use: pd.read_csv('URL_DO_GITHUB')
-df = pd.read_csv('C:\\Users\\giova\\PycharmProjects\\cp2_SERS\\datasets_parte1\\energydata_complete.csv')
+df = pd.read_csv('C:\\Users\\giova\\PycharmProjects\\cp2_SERS\\PARTE1\\datasets_parte1\\energydata_complete.csv')
 
 print("=" * 60)
 print("ANÁLISE DO DATASET")
@@ -39,8 +37,7 @@ print(df.info())
 # Variável alvo: Appliances (consumo de energia)
 # Variáveis preditoras: temperaturas, umidades, etc.
 
-# Selecionando as principais colunas (ajuste conforme seu dataset)
-# Assumindo que o dataset tem: Appliances, T1, T2, ..., RH_1, RH_2, etc.
+# Selecionando as principais colunas
 colunas_relevantes = [col for col in df.columns if col != 'Appliances' and col != 'date']
 colunas_relevantes = colunas_relevantes[:10]  # Pegando as 10 primeiras para simplificar
 
@@ -129,5 +126,5 @@ print(resultados.to_string(index=False))
 melhor_idx = resultados['R²'].idxmax()
 melhor_modelo = resultados.loc[melhor_idx, 'Modelo']
 
-print(f"\n🏆 MELHOR MODELO: {melhor_modelo}")
+print(f"\n MELHOR MODELO: {melhor_modelo}")
 print(f"   (possui o maior R² = {resultados.loc[melhor_idx, 'R²']:.4f})")
