@@ -13,7 +13,7 @@
  • Avalie com acurácia e matriz de confusão.
 '''
 
-# ===== IMPORTANDO BIBLIOTECAS =====
+# importando bibliotecas
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -25,22 +25,11 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# ===== CARREGANDO OS DADOS =====
+# dados
 df = pd.read_csv('C:\\Users\\giova\\PycharmProjects\\cp2_SERS\\PARTE2\\datasets_parte2\\SolarPrediction.csv')
 
-print("=" * 60)
-print("ANÁLISE DO DATASET")
-print("=" * 60)
-print(f"Dimensões do dataset: {df.shape}")
-print(f"\nPrimeiras linhas:")
-print(df.head())
-print(f"\nColunas disponíveis:")
-print(df.columns.tolist())
-print(f"\nInformações gerais:")
-print(df.info())
-
-# ===== PREPARANDO OS DADOS =====
-# Identificando a coluna de radiação solar (geralmente 'Radiation' ou similar)
+# preparando os dados
+# Identificando a coluna de radiação solar
 coluna_radiacao = None
 for col in ['Radiation', 'radiation', 'Solar_Radiation', 'solar_radiation']:
     if col in df.columns:
@@ -51,10 +40,8 @@ if coluna_radiacao is None:
     print("\nAVISO: Coluna de radiação não encontrada. Usando primeira coluna numérica.")
     coluna_radiacao = df.select_dtypes(include=[np.number]).columns[0]
 
-print(f"\n{'=' * 60}")
 print(f"Coluna de radiação identificada: {coluna_radiacao}")
 
-# Removendo valores faltantes
 df_limpo = df.dropna()
 
 # Criando a variável alvo (Alta/Baixa Radiação) usando a MEDIANA
@@ -70,10 +57,8 @@ print(f"  0 = Baixa Radiação (< {mediana_radiacao:.2f})")
 print(f"  1 = Alta Radiação (>= {mediana_radiacao:.2f})")
 
 # Separando X (variáveis independentes) e y (variável dependente)
-# Remove a coluna de radiação original e a classe criada
 X = df_limpo.drop(columns=[coluna_radiacao, 'Classe_Radiacao'])
 
-# Remove colunas não numéricas
 X = X.select_dtypes(include=[np.number])
 
 y = df_limpo['Classe_Radiacao'].values
@@ -90,11 +75,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 print(f"\nAmostras de treino: {len(X_train)} (70%)")
 print(f"Amostras de teste: {len(X_test)} (30%)")
 
-# ===== NORMALIZANDO OS DADOS =====
-print(f"\n{'=' * 60}")
-print("NORMALIZANDO OS ATRIBUTOS")
-print("=" * 60)
-
+# normalizando dados
 # Normalização com StandardScaler
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
@@ -102,11 +83,7 @@ X_test_scaled = scaler.transform(X_test)
 
 print("Dados normalizados com StandardScaler (média=0, desvio=1)")
 
-# ===== TREINANDO OS MODELOS =====
-print(f"\n{'=' * 60}")
-print("TREINAMENTO DOS MODELOS")
-print("=" * 60)
-
+# treino modelos
 # 1. ÁRVORE DE DECISÃO
 print("\n1. Treinando Árvore de Decisão...")
 modelo_arvore = DecisionTreeClassifier(random_state=42, max_depth=10)
@@ -125,12 +102,7 @@ modelo_svm = SVC(kernel='rbf', random_state=42)
 modelo_svm.fit(X_train_scaled, y_train)
 y_pred_svm = modelo_svm.predict(X_test_scaled)
 
-# ===== AVALIANDO OS MODELOS =====
-print(f"\n{'=' * 60}")
-print("RESULTADOS - COMPARAÇÃO DOS MODELOS")
-print("=" * 60)
-
-
+# avaliando
 # Função para calcular métricas
 def avaliar_modelo(y_real, y_previsto, nome_modelo):
     acuracia = accuracy_score(y_real, y_previsto)
@@ -149,11 +121,7 @@ acc_arvore, cm_arvore = avaliar_modelo(y_test, y_pred_arvore, "ÁRVORE DE DECIS�
 acc_forest, cm_forest = avaliar_modelo(y_test, y_pred_forest, "RANDOM FOREST")
 acc_svm, cm_svm = avaliar_modelo(y_test, y_pred_svm, "SVM")
 
-# ===== COMPARAÇÃO FINAL =====
-print(f"\n{'=' * 60}")
-print("RESUMO COMPARATIVO")
-print("=" * 60)
-
+# comparando
 resultados = pd.DataFrame({
     'Modelo': ['Árvore de Decisão', 'Random Forest', 'SVM'],
     'Acurácia': [acc_arvore, acc_forest, acc_svm]
@@ -168,10 +136,7 @@ melhor_modelo = resultados.loc[melhor_idx, 'Modelo']
 print(f"\n MELHOR MODELO: {melhor_modelo}")
 print(f"   (possui a maior acurácia = {resultados.loc[melhor_idx, 'Acurácia']:.4f})")
 
-# ===== VISUALIZAÇÃO DAS MATRIZES DE CONFUSÃO =====
-print(f"\n{'=' * 60}")
-print("Gerando gráficos das matrizes de confusão...")
-
+# matrizes de confusao
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 
 # Matriz 1: Árvore de Decisão
@@ -197,11 +162,7 @@ plt.savefig('comparacao_solar.png', dpi=300, bbox_inches='tight')
 print("Gráfico salvo como 'comparacao_solar.png'")
 plt.show()
 
-# ===== RELATÓRIO DETALHADO DO MELHOR MODELO =====
-print(f"\n{'=' * 60}")
-print(f"RELATÓRIO DETALHADO - {melhor_modelo}")
-print("=" * 60)
-
+# melhor modelo
 if melhor_modelo == 'Árvore de Decisão':
     print(classification_report(y_test, y_pred_arvore, target_names=['Baixa Radiação', 'Alta Radiação']))
 elif melhor_modelo == 'Random Forest':
