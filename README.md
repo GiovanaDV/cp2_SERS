@@ -1,4 +1,4 @@
-PARTE 01 
+**PARTE 01** 
 
 
 - Ex 01
@@ -40,3 +40,58 @@ mostrando-se menos eficaz para esse tipo de problema.
 --> A Árvore de Decisão acertou 100% porque os dados de rede elétrica seguem padrões físicos muito claros e previsíveis, criando "regras" perfeitas que o modelo conseguiu aprender completamente. 
 É o modelo mais confiável para detectar instabilidade nesta rede.
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+**PARTE 02** 
+
+- Ex 01
+
+<img width="1500" height="400" alt="Figure_1" src="https://github.com/user-attachments/assets/e30a8483-a0bf-411f-ac7e-d6a5e6ebdb43" />
+
+Foram testados três modelos de classificação para prever níveis de radiação solar (Alta ou Baixa) a partir de variáveis climáticas. 
+A variável alvo foi criada usando a mediana da radiação como limiar, dividindo os dados em duas classes equilibradas. 
+
+1. **Random Forest** apresentou o melhor desempenho com 87,99% de acurácia
+2. Árvore de Decisão (87,76%)
+3. SVM (84,95%)
+ 
+Analisando a matriz de confusão do Random Forest, observa-se que o modelo teve melhor desempenho em identificar Baixa Radiação (97% de recall) do que Alta Radiação (79% de recall), indicando que ele é mais conservador e tende a classificar casos duvidosos como "baixa radiação". Os três modelos apresentaram desempenho satisfatório (acima de 84%), demonstrando que é possível prever níveis de radiação solar com boa confiabilidade usando dados climáticos.
+
+--> Random Forest venceu com 88% de acertos porque é mais robusto ao combinar várias árvores. Ele é especialmente bom em detectar baixa radiação (97% de acerto), sendo o modelo mais confiável para prever condições solares.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+- Ex 02
+
+<img width="1500" height="400" alt="3" src="https://github.com/user-attachments/assets/6eb2666e-3a5e-45de-a90c-3871390192a7" />
+
+Foram testados três modelos de regressão para prever a potência gerada por turbinas eólicas (em kW) a partir de variáveis operacionais como velocidade do vento, direção do vento e ângulo do rotor. 
+
+1. **Random Forest** apresentou o melhor desempenho com R² de 0.9051, explicando 90,5% da variação na potência gerada
+2. Regressão Linear (R² = 0.9007)
+3. Árvore de Regressão (R² = 0.8577).
+
+O Random Forest também obteve os menores erros de previsão, com RMSE de 402,38 kW e MAE de 163,21 kW, indicando que suas previsões são, em média, mais precisas. A análise das variáveis mais importantes revelou que a **Velocidade do Vento** (48,93% de importância) e a **Curva de Potência Teórica** (47,20%) são os fatores dominantes na previsão, enquanto a Direção do Vento tem influência menor (3,86%). Isso faz sentido fisicamente, pois a potência de uma turbina eólica é diretamente proporcional ao cubo da velocidade do vento (P ∝ v³), tornando esta a variável mais crítica. Todos os três modelos apresentaram R² acima de 85%, demonstrando que é altamente viável prever a potência de turbinas eólicas a partir de dados operacionais, sendo o Random Forest o mais confiável para aplicações práticas.
+
+--> Random Forest venceu com 90,5% de explicação porque captura melhor a relação não-linear entre vento e potência. A velocidade do vento é disparadamente o fator mais importante (49%), confirmando a física das turbinas eólicas. O modelo é altamente confiável para prever geração de energia.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
