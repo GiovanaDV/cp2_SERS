@@ -9,7 +9,7 @@ desempenho com acurácia, matriz de confusão e F1-score.
 • Compare os resultados e discuta qual modelo é mais confiável para detectar instabilidade.
 '''
 
-# ===== IMPORTANDO BIBLIOTECAS =====
+# importando bibliotecas
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -20,24 +20,11 @@ from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, classifi
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# ===== CARREGANDO OS DADOS =====
+# carregando dados
 df = pd.read_csv('C:\\Users\\giova\\PycharmProjects\\cp2_SERS\\PARTE1\\datasets_parte1\\smart_grid_stability_augmented.csv')
 
-print("=" * 60)
-print("ANÁLISE DO DATASET")
-print("=" * 60)
-print(f"Dimensões do dataset: {df.shape}")
-print(f"\nPrimeiras linhas:")
-print(df.head())
-print(f"\nColunas disponíveis:")
-print(df.columns.tolist())
-print(f"\nInformações gerais:")
-print(df.info())
-
-# ===== PREPARANDO OS DADOS =====
+# preparando dados
 # Variável alvo: stabf ou stab (estável=1 ou instável=0)
-
-# Identificando a coluna alvo
 coluna_alvo = None
 for col in ['stabf', 'stab', 'stability', 'stable']:
     if col in df.columns:
@@ -48,14 +35,11 @@ if coluna_alvo is None:
     print("\nAVISO: Não encontrei coluna de estabilidade. Usando última coluna.")
     coluna_alvo = df.columns[-1]
 
-print(f"\n{'=' * 60}")
 print(f"Coluna alvo (estabilidade): {coluna_alvo}")
 
-# Verificando distribuição das classes
 print(f"\nDistribuição das classes:")
 print(df[coluna_alvo].value_counts())
 
-# Removendo valores faltantes
 df_limpo = df.dropna()
 
 # Separando X (variáveis independentes) e y (variável dependente)
@@ -77,11 +61,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 print(f"Amostras de treino: {len(X_train)}")
 print(f"Amostras de teste: {len(X_test)}")
 
-# ===== TREINANDO OS MODELOS =====
-print(f"\n{'=' * 60}")
-print("TREINAMENTO DOS MODELOS")
-print("=" * 60)
-
+# treinando modelos
 # 1. ÁRVORE DE DECISÃO
 print("\n1. Treinando Árvore de Decisão...")
 modelo_arvore = DecisionTreeClassifier(random_state=42, max_depth=10)
@@ -100,12 +80,7 @@ modelo_logistica = LogisticRegression(random_state=42, max_iter=1000)
 modelo_logistica.fit(X_train, y_train)
 y_pred_logistica = modelo_logistica.predict(X_test)
 
-# ===== AVALIANDO OS MODELOS =====
-print(f"\n{'=' * 60}")
-print("RESULTADOS - COMPARAÇÃO DOS MODELOS")
-print("=" * 60)
-
-
+# avaliando modelos
 # Função para calcular métricas
 def avaliar_modelo(y_real, y_previsto, nome_modelo):
     acuracia = accuracy_score(y_real, y_previsto)
@@ -126,10 +101,7 @@ acc_arvore, f1_arvore, cm_arvore = avaliar_modelo(y_test, y_pred_arvore, "ÁRVOR
 acc_knn, f1_knn, cm_knn = avaliar_modelo(y_test, y_pred_knn, "KNN")
 acc_logistica, f1_logistica, cm_logistica = avaliar_modelo(y_test, y_pred_logistica, "REGRESSÃO LOGÍSTICA")
 
-# ===== COMPARAÇÃO FINAL =====
-print(f"\n{'=' * 60}")
-print("RESUMO COMPARATIVO")
-print("=" * 60)
+# comparando modelos
 
 resultados = pd.DataFrame({
     'Modelo': ['Árvore de Decisão', 'KNN', 'Regressão Logística'],
@@ -146,10 +118,7 @@ melhor_modelo = resultados.loc[melhor_idx, 'Modelo']
 print(f"\n MELHOR MODELO: {melhor_modelo}")
 print(f"   (possui a maior acurácia = {resultados.loc[melhor_idx, 'Acurácia']:.4f})")
 
-# ===== VISUALIZAÇÃO DAS MATRIZES DE CONFUSÃO =====
-print(f"\n{'=' * 60}")
-print("Gerando gráficos das matrizes de confusão...")
-
+# matrizes graficos
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 
 # Matriz 1: Árvore de Decisão
@@ -175,11 +144,7 @@ plt.savefig('comparacao_classificacao.png', dpi=300, bbox_inches='tight')
 print("Gráfico salvo como 'comparacao_classificacao.png'")
 plt.show()
 
-# ===== RELATÓRIO DETALHADO DO MELHOR MODELO =====
-print(f"\n{'=' * 60}")
-print(f"RELATÓRIO DETALHADO - {melhor_modelo}")
-print("=" * 60)
-
+# melhor modelo
 if melhor_modelo == 'Árvore de Decisão':
     print(classification_report(y_test, y_pred_arvore, target_names=['Instável', 'Estável']))
 elif melhor_modelo == 'KNN':
