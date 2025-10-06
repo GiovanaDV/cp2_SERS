@@ -9,7 +9,7 @@ avalie o desempenho com métricas como R², RMSE e MAE.
 • Compare os resultados e discuta qual modelo melhor explica o consumo.
 '''
 
-# ===== IMPORTANDO BIBLIOTECAS =====
+# importando bibliotecas
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -19,29 +19,16 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 import matplotlib.pyplot as plt
 
-# ===== CARREGANDO OS DADOS =====
+# carregando dados csv
 df = pd.read_csv('C:\\Users\\giova\\PycharmProjects\\cp2_SERS\\PARTE1\\datasets_parte1\\energydata_complete.csv')
 
-print("=" * 60)
-print("ANÁLISE DO DATASET")
-print("=" * 60)
-print(f"Dimensões do dataset: {df.shape}")
-print(f"\nPrimeiras linhas:")
-print(df.head())
-print(f"\nColunas disponíveis:")
-print(df.columns.tolist())
-print(f"\nInformações gerais:")
-print(df.info())
-
-# ===== PREPARANDO OS DADOS =====
+# preparando dados
 # Variável alvo: Appliances (consumo de energia)
 # Variáveis preditoras: temperaturas, umidades, etc.
 
-# Selecionando as principais colunas
 colunas_relevantes = [col for col in df.columns if col != 'Appliances' and col != 'date']
 colunas_relevantes = colunas_relevantes[:10]  # Pegando as 10 primeiras para simplificar
 
-# Removendo valores faltantes
 df_limpo = df[['Appliances'] + colunas_relevantes].dropna()
 
 # Separando X (variáveis independentes) e y (variável dependente)
@@ -60,7 +47,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 print(f"Amostras de treino: {len(X_train)}")
 print(f"Amostras de teste: {len(X_test)}")
 
-# ===== TREINANDO OS MODELOS =====
+# treinando modelos
 print(f"\n{'=' * 60}")
 print("TREINAMENTO DOS MODELOS")
 print("=" * 60)
@@ -83,12 +70,7 @@ modelo_forest = RandomForestRegressor(n_estimators=100, random_state=42, max_dep
 modelo_forest.fit(X_train, y_train)
 y_pred_forest = modelo_forest.predict(X_test)
 
-# ===== AVALIANDO OS MODELOS =====
-print(f"\n{'=' * 60}")
-print("RESULTADOS - COMPARAÇÃO DOS MODELOS")
-print("=" * 60)
-
-
+# avaliando modelos
 # Função para calcular métricas
 def avaliar_modelo(y_real, y_previsto, nome_modelo):
     r2 = r2_score(y_real, y_previsto)
@@ -108,11 +90,7 @@ r2_linear, rmse_linear, mae_linear = avaliar_modelo(y_test, y_pred_linear, "REGR
 r2_arvore, rmse_arvore, mae_arvore = avaliar_modelo(y_test, y_pred_arvore, "ÁRVORE DE DECISÃO")
 r2_forest, rmse_forest, mae_forest = avaliar_modelo(y_test, y_pred_forest, "RANDOM FOREST")
 
-# ===== COMPARAÇÃO FINAL =====
-print(f"\n{'=' * 60}")
-print("RESUMO COMPARATIVO")
-print("=" * 60)
-
+# comparando modelos
 resultados = pd.DataFrame({
     'Modelo': ['Regressão Linear', 'Árvore de Decisão', 'Random Forest'],
     'R²': [r2_linear, r2_arvore, r2_forest],
