@@ -23,7 +23,7 @@ foi perfeito porque faltam informações importantes no dataset (tipo: quando as
 
 - Ex 02
 
-![Figure_1.png](attachment:1d07abac-b36a-4d20-9cb6-096682ab6953:Figure_1.png)
+<img width="1500" height="400" alt="Figure_1" src="https://github.com/user-attachments/assets/f8af0ea6-38ae-4028-b4d5-87220fdd8bc1" />
 
 Análise dos resultados: 
 
