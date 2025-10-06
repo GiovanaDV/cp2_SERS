@@ -49,6 +49,8 @@ mostrando-se menos eficaz para esse tipo de problema.
 
 <img width="1500" height="400" alt="Figure_1" src="https://github.com/user-attachments/assets/e30a8483-a0bf-411f-ac7e-d6a5e6ebdb43" />
 
+Análise dos resultados:
+
 Foram testados três modelos de classificação para prever níveis de radiação solar (Alta ou Baixa) a partir de variáveis climáticas. 
 A variável alvo foi criada usando a mediana da radiação como limiar, dividindo os dados em duas classes equilibradas. 
 
@@ -65,6 +67,8 @@ Analisando a matriz de confusão do Random Forest, observa-se que o modelo teve 
 - Ex 02
 
 <img width="1500" height="400" alt="3" src="https://github.com/user-attachments/assets/6eb2666e-3a5e-45de-a90c-3871390192a7" />
+
+Análise dos resultados:
 
 Foram testados três modelos de regressão para prever a potência gerada por turbinas eólicas (em kW) a partir de variáveis operacionais como velocidade do vento, direção do vento e ângulo do rotor. 
 
